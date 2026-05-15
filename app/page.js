@@ -180,13 +180,13 @@ export default function Home() {
             <div className="space-y-4">
               <div className="font-bold text-3xl tracking-tighter uppercase">FitNest</div>
               <p className="text-muted-foreground text-sm font-bold uppercase tracking-widest">
-                Made by Sakshham Bhagat, Ujjwal Dalal, Anush Sharma
+                Made by Anush Sharma
               </p>
             </div>
             
             <div className="flex items-center gap-8">
               <Link 
-                href="https://github.com/SakshhamTheCoder/fitnest-ucs662" 
+                href="https://github.com/Anush28Sharma/FitNest" 
                 target="_blank"
                 className="text-xs font-black uppercase tracking-[0.2em] text-accent hover:underline"
               >
