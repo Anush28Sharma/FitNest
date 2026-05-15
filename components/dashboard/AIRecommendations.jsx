@@ -59,7 +59,7 @@ export default function AIRecommendations({ user }) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {recommendations.slice(0, 4).map((food, idx) => (
+                {Array.isArray(recommendations) && recommendations.slice(0, 4).map((food, idx) => (
                 <div 
                     key={idx} 
                     className="p-8 bg-muted rounded-lg border-2 border-transparent hover:border-accent hover:bg-white transition-all duration-200 group/item"
