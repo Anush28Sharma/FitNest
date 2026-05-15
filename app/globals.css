@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-outfit), system-ui, sans-serif;
+  --font-display: var(--font-outfit), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+
+  /* Zero Artificial Depth - No shadows */
+  --shadow-none: none;
+  --shadow-accent: none;
+  --shadow-accent-lg: none;
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #111827;
+  --muted: #F3F4F6;
+  --muted-foreground: #6B7280;
+  --accent: #3B82F6;
+  --accent-secondary: #10B981;
+  --accent-foreground: #FFFFFF;
+  --border: #E5E7EB;
+  --card: #FFFFFF;
+  --ring: #3B82F6;
+}
+
+/* Confident Reduction Reset */
+* {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .geometric-bg {
+    background-image: radial-gradient(circle, var(--muted) 2px, transparent 2px);
+    background-size: 40px 40px;
+  }
+
+  /* Sharp color transitions for sections */
+  .section-blue { background-color: #3B82F6; color: white; }
+  .section-emerald { background-color: #10B981; color: white; }
+  .section-amber { background-color: #F59E0B; color: white; }
+  .section-muted { background-color: #F3F4F6; color: #111827; }
+}
+
+/* Snappy Digital Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s ease-out both;
+}
+
+/* Hover Scale Transformations */
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+}
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.card-hover {
+  transition: transform 0.2s ease-in-out;
+}
+.card-hover:hover {
+  transform: scale(1.02);
+}
