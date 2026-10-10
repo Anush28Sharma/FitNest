@@ -44,17 +44,17 @@ def load_artifacts():
         try:
             model_path = os.path.join(artifacts_dir, "health_model.pkl")
             if os.path.exists(model_path):
-                print(f"🔍 Discovered artifacts at: {artifacts_dir}")
+                print(f"[INFO] Discovered artifacts at: {artifacts_dir}")
                 model = joblib.load(model_path)
                 gender_encoder = joblib.load(os.path.join(artifacts_dir, "gender_encoder.pkl"))
                 target_encoder = joblib.load(os.path.join(artifacts_dir, "target_encoder.pkl"))
                 imputer_values = joblib.load(os.path.join(artifacts_dir, "imputer.pkl"))
-                print("✅ ML Model artifacts loaded successfully.")
+                print("[OK] ML Model artifacts loaded successfully.")
                 return True
         except Exception as e:
-            print(f"⚠️ Failed to load from {artifacts_dir}: {e}")
+            print(f"[WARN] Failed to load from {artifacts_dir}: {e}")
             
-    print("❌ All artifact locations exhausted. /predict will be disabled.")
+    print("[ERROR] All artifact locations exhausted. /predict will be disabled.")
     return False
 
 load_artifacts()
@@ -71,12 +71,12 @@ try:
             clean = c.split('(')[0].strip().lower().replace(' ', '_')
             new_cols.append(clean)
         food_df.columns = new_cols
-        print(f"✅ Indian Food Dataset loaded: {len(food_df)} dishes.")
+        print(f"[OK] Indian Food Dataset loaded: {len(food_df)} dishes.")
         print(f"Columns discovered: {list(food_df.columns)}")
     else:
-        print(f"❌ Food dataset not found at {FOOD_DATA_PATH}")
+        print(f"[ERROR] Food dataset not found at {FOOD_DATA_PATH}")
 except Exception as e:
-    print(f"❌ Error loading food dataset: {e}")
+    print(f"[ERROR] Error loading food dataset: {e}")
 
 class HealthInput(BaseModel):
     bmi: float
@@ -112,7 +112,7 @@ def search_food(q: str = Query(..., min_length=1)):
         # Map to dict, handle missing columns gracefully
         return results[[c for c in out_cols if c in results.columns]].to_dict(orient='records')
     except Exception as e:
-        print(f"❌ Search error: {e}")
+        print(f"[ERROR] Search error: {e}")
         return []
 
 @app.get("/food/recommend")
@@ -135,7 +135,7 @@ def recommend_food(goal: str):
         out_cols = ['dish_name', 'calories', 'protein', 'carbohydrates', 'fats']
         return recs.sample(sample_size)[[c for c in out_cols if c in recs.columns]].to_dict(orient='records')
     except Exception as e:
-        print(f"❌ Recommendation error: {e}")
+        print(f"[ERROR] Recommendation error: {e}")
         return []
 
 @app.post("/predict")
@@ -173,8 +173,9 @@ def predict_health_status(data: HealthInput):
     
     try:
         age = data.age or imputer_values['age']
-        gender = data.gender or imputer_values['gender']
-        
+        # The encoder was trained on 'Male'/'Female'; the app stores lowercase
+        gender = (data.gender or imputer_values['gender']).strip().capitalize()
+
         try:
             gender_encoded_val = gender_encoder.transform([gender])[0]
         except:
@@ -200,7 +201,7 @@ def predict_health_status(data: HealthInput):
             "input": data.dict()
         }
     except Exception as e:
-        print(f"❌ Prediction error: {e}")
+        print(f"[ERROR] Prediction error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

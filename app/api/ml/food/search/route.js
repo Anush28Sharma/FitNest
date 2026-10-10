@@ -8,7 +8,11 @@ export async function GET(request) {
 
     const baseUrl = process.env.ML_SERVICE_URL || 'http://localhost:8000';
     try {
-        const response = await fetch(`${baseUrl}/food/search?q=${q}`);
+        const response = await fetch(`${baseUrl}/food/search?q=${encodeURIComponent(q)}`);
+        if (!response.ok) {
+            console.error('Food search proxy error: ML service returned', response.status);
+            return NextResponse.json({ error: 'ML service error' }, { status: 502 });
+        }
         const data = await response.json();
         return NextResponse.json(data);
     } catch (error) {

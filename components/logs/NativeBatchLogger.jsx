@@ -14,9 +14,9 @@ export default function NativeBatchLogger({ meals, setMeals, exercises, setExerc
       return;
     }
     try {
-      const res = await fetch(`/api/ml/food/search?q=${query}`);
+      const res = await fetch(`/api/ml/food/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
-      setFoodSearchResults(data);
+      setFoodSearchResults(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Food search error:', error);
     }
